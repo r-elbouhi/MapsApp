@@ -1,4 +1,4 @@
-package com.rami.maps;
+package com.starter.mapsApp;
 
 import android.content.Context;
 import android.util.Log;
