@@ -1,23 +1,23 @@
 package com.starter.mapsApp.maps.wrapper
 
 /**
- * Created by Rami El-bouhi on 11,March,2021
+ * Created by Rami El-bouhi on 14,March,2021
  */
 class MarkerOptions {
-    var google = com.google.android.gms.maps.model.MarkerOptions()
+    var huawei = com.huawei.hms.maps.model.MarkerOptions()
 
     fun position(value: LatLng): MarkerOptions {
-        google = google.position(value.google)
+        huawei = huawei.position(value.huawei)
         return this
     }
 
     fun icon(value: BitmapDescriptor?): MarkerOptions {
-        google = google.icon(value?.google)
+        huawei = huawei.icon(value?.huawei)
         return this
     }
 
     fun title(value: String?): MarkerOptions {
-        google = google.title(value)
+        huawei = huawei.title(value)
         return this
     }
 }
