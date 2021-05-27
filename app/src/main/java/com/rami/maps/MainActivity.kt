@@ -2,33 +2,72 @@ package com.rami.maps
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.huawei.hms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.huawei.hms.maps.HuaweiMap
-import com.huawei.hms.maps.OnMapReadyCallback
-import com.huawei.hms.maps.SupportMapFragment
-import com.huawei.hms.maps.model.LatLng
-import com.huawei.hms.maps.model.MarkerOptions
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: HuaweiMap
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+
+        if (HmsGmsUtil.isHmsAvailable(this)) {
+            createAsH()
+        } else {
+            createAsG()
+        }
     }
 
-    override fun onMapReady(map: HuaweiMap) {
-        mMap = map
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(
-            MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney")
-        )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    /**
+     * HMS creation process
+     */
+    private fun createAsH() {
+        // Set the HMS resource file.
+        setContentView(R.layout.activity_main_hms)
+        // Initialize parameters.
+        initMember()
+        // Obtain the HMS fragment based on the ID.
+        val hMapFragment =
+            supportFragmentManager.findFragmentById(R.id.map) as com.huawei.hms.maps.SupportMapFragment
+        // Load a map.
+        hMapFragment.getMapAsync { huaweiMap: HuaweiMap ->
+            val sydney = com.huawei.hms.maps.model.LatLng(-34.0, 151.0)
+            huaweiMap.addMarker(
+                com.huawei.hms.maps.model.MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney")
+            )
+            huaweiMap.moveCamera(com.huawei.hms.maps.CameraUpdateFactory.newLatLng(sydney))
+        }
+    }
+
+    /**
+     * GMS creation process
+     */
+    private fun createAsG() {
+        // Set the GMS resource file.
+        setContentView(R.layout.activity_main)
+        // Initialize parameters.
+        initMember()
+        // Obtain the GMS fragment based on the ID.
+        val gMapFragment =
+            supportFragmentManager.findFragmentById(R.id.map) as com.google.android.gms.maps.SupportMapFragment
+        // Load a map.
+        gMapFragment.getMapAsync { googleMap: GoogleMap ->
+            val sydney = com.google.android.gms.maps.model.LatLng(-34.0, 151.0)
+            googleMap.addMarker(
+                com.google.android.gms.maps.model.MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney")
+            )
+            googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLng(sydney))
+        }
+    }
+
+    /**
+     * Initialize member variables and extract them into independent methods.
+     */
+    private fun initMember() {
+        // remaining member
     }
 }
